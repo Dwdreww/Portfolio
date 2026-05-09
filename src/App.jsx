@@ -36,7 +36,7 @@ const projects = [
     category: ["AI / ML"],
     highlight: "Emotion Classification",
     description:
-      "A machine learning project that classifies emotions using heart rate data with models such as LSTM, GRU, and SVM.",
+      "Ongoing project: A machine learning project that classifies emotions using heart rate data with models such as LSTM, GRU, and SVM.",
     tech: ["Python", "TensorFlow", "LSTM", "GRU", "SVM"],
     demoLink: "Not Yet Finished",
   },
