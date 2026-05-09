@@ -148,13 +148,13 @@ function App() {
             </div>
 
             <div>
-              <h3>AI</h3>
-              <p>Focus Area</p>
+              <h3>Web</h3>
+              <p>Applications</p>
             </div>
 
             <div>
-              <h3>React</h3>
-              <p>Frontend</p>
+              <h3>ML</h3>
+              <p>Solutions</p>
             </div>
           </div>
         </div>
