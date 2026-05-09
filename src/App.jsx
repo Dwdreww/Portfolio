@@ -38,7 +38,7 @@ const projects = [
     description:
       "A machine learning project that classifies emotions using heart rate data with models such as LSTM, GRU, and SVM.",
     tech: ["Python", "TensorFlow", "LSTM", "GRU", "SVM"],
-    demoLink: "#",
+    demoLink: "Not Yet Finished",
   },
 ];
 
