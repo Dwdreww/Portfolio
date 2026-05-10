@@ -165,7 +165,7 @@ function App() {
 
           <div className="techBubble bubbleOne">React</div>
           <div className="techBubble bubbleTwo">Python</div>
-          <div className="techBubble bubbleThree">Java</div>
+          <div className="techBubble bubbleThree">JavaScript</div>
           <div className="techBubble bubbleFour">Transformers</div>
 
           <div className="mainCircle">
