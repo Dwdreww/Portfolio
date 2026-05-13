@@ -3,6 +3,34 @@ import { useEffect, useMemo, useState } from "react";
 const EMAIL = "andrewvalenzuela082@gmail.com";
 const PROFILE_IMAGE = `${import.meta.env.BASE_URL}drew.JPEG`;
 
+const figmaWorks = [
+  {
+    title: "Nike App Landing Page",
+    type: "Mobile App Prototype",
+    description:
+      "A Nike app landing page prototype created in Figma, focused on bold product presentation, clean mobile layout, and a smooth app-style user flow.",
+    tools: ["Figma", "Landing Page", "Mobile UI", "Prototype"],
+    image: `${import.meta.env.BASE_URL}Nikeapp.png`,
+    link: "https://www.figma.com/proto/QFTwsuhr07SvXdR89p4BaO/NIKE-APP-LANDING-PAGE?node-id=102-11&p=f&t=JZUe3lFT5r4nuN8d-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=102%3A11",
+  },
+  {
+    title: "Future UI/UX Work",
+    type: "Coming Soon",
+    description:
+      "A placeholder for upcoming Figma interface design projects, prototypes, and user experience studies.",
+    tools: ["Figma", "UI Design", "Prototype", "Coming Soon"],
+    link: "#",
+  },
+  {
+    title: "Future Design Case Study",
+    type: "Coming Soon",
+    description:
+      "A reserved space for a future design case study with wireframes, user flows, and polished screens.",
+    tools: ["Figma", "Wireframe", "User Flow", "Coming Soon"],
+    link: "#",
+  },
+];
+
 const projects = [
   {
     title: "AGRI-VISION | Pineapple Disease Detection System",
@@ -23,22 +51,23 @@ const projects = [
     demoLink: "https://dwdreww.github.io/Latest-Chunky-Model/",
   },
   {
-    title: "Paw Match",
-    category: ["Full-Stack", "Web App"],
-    highlight: "Pet Matching App",
+    title: "PawMatch",
+    category: ["Full-Stack"],
+    highlight: "Pet Matching Web App",
     description:
-      "A web-based application designed to help users find and match with pets through a simple and accessible interface.",
+      "A pet matching web application designed to help users browse pet profiles and find suitable matches through a clean, simple interface.",
     tech: ["React", "JavaScript", "CSS", "GitHub Pages"],
     demoLink: "https://dwdreww.github.io/app-test/",
   },
   {
-    title: "Heart Rate Emotion Classifier",
-    category: ["AI / ML"],
-    highlight: "Emotion Classification",
+    title: "Figma UI/UX Designs",
+    category: ["UI / UX"],
+    highlight: "Design Landing Page",
     description:
-      "Ongoing project: A machine learning project that classifies emotions using heart rate data with models such as LSTM, GRU, and SVM.",
-    tech: ["Python", "TensorFlow", "LSTM", "GRU", "SVM"],
-    demoLink: "Not Yet Finished",
+      "A collection of Figma-based interface designs, wireframes, and prototypes focused on clean layout and user-friendly experiences.",
+    tech: ["Figma", "Wireframe", "Prototype", "UI Design"],
+    isDesignPage: true,
+    buttonText: "View Designs",
   },
 ];
 
@@ -48,13 +77,14 @@ const categories = [
   "Full-Stack",
   "Computer Vision",
   "NLP / BERT",
-  "Web App",
+  "UI / UX",
 ];
 
 function App() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [copied, setCopied] = useState(false);
   const [showTopButton, setShowTopButton] = useState(false);
+  const [currentPage, setCurrentPage] = useState("portfolio");
 
   const filteredProjects = useMemo(() => {
     if (activeCategory === "All") return projects;
@@ -72,6 +102,13 @@ function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
 
   const handleCopyEmail = async () => {
     try {
@@ -92,6 +129,151 @@ function App() {
       behavior: "smooth",
     });
   };
+
+  if (currentPage === "designs") {
+    return (
+      <main className="portfolio designPage">
+        <div className="backgroundGlow glowOne"></div>
+        <div className="backgroundGlow glowTwo"></div>
+        <div className="backgroundGrid"></div>
+
+        <nav className="navbar">
+          <button
+            className="logo logoButton"
+            onClick={() => setCurrentPage("portfolio")}
+          >
+            <span className="logoMark">CS</span>
+            <span>Portfolio</span>
+          </button>
+
+          <div className="navLinks designNavLinks">
+            <button onClick={() => setCurrentPage("portfolio")}>
+              Portfolio
+            </button>
+            <a href={`mailto:${EMAIL}`}>Contact</a>
+          </div>
+        </nav>
+
+        <section className="designHero">
+          <div className="designHeroText">
+            <p className="sectionTag">UI / UX Design Works</p>
+
+            <h1>
+              Figma Designs & <span>Prototypes</span>
+            </h1>
+
+            <p>
+              This page showcases my interface design works, wireframes, and
+              prototypes created using Figma. These designs focus on clean
+              layouts, smooth user flow, and practical user experience.
+            </p>
+
+            <div className="designHeroButtons">
+              <button
+                className="primaryButton"
+                onClick={() => setCurrentPage("portfolio")}
+              >
+                Back to Portfolio
+              </button>
+
+              <a className="secondaryButton" href="#designWorks">
+                View Design Works
+              </a>
+            </div>
+          </div>
+
+          <div className="designHeroCard">
+            <div className="designMockup">
+              <div className="mockupTop"></div>
+              <div className="mockupLine long"></div>
+              <div className="mockupLine"></div>
+
+              <div className="mockupGrid">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <div className="designFloatingTag tagOne">Wireframe</div>
+            <div className="designFloatingTag tagTwo">Prototype</div>
+            <div className="designFloatingTag tagThree">UI Design</div>
+          </div>
+        </section>
+
+        <section id="designWorks" className="section designWorksSection">
+          <div className="projectHeader">
+            <div>
+              <p className="sectionTag">Design Gallery</p>
+              <h2 className="sectionTitle">Selected Figma Works</h2>
+            </div>
+          </div>
+
+          <div className="designGrid">
+            {figmaWorks.map((work, index) => (
+              <article className="designCard" key={work.title}>
+                <div
+                  className={`designPreview ${
+                    work.image ? "designPreviewImage" : ""
+                  }`}
+                >
+                  {work.image ? (
+                    <img src={work.image} alt={`${work.title} preview`} />
+                  ) : (
+                    <>
+                      <div className="previewCircle"></div>
+
+                      <div className="previewPanel">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="projectTop">
+                  <span>0{index + 1}</span>
+                  <p>{work.type}</p>
+                </div>
+
+                <h3>{work.title}</h3>
+
+                <p>{work.description}</p>
+
+                <div className="techList">
+                  {work.tools.map((tool) => (
+                    <span key={tool}>{tool}</span>
+                  ))}
+                </div>
+
+                <div className="projectButtons">
+                  <a href={work.link} target="_blank" rel="noreferrer">
+                    {work.link === "#" ? "Coming Soon" : "Open Figma"}
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <footer className="footer">
+          <p>© 2026 Andrew Valenzuela. UI/UX Design Works.</p>
+        </footer>
+
+        {showTopButton && (
+          <button
+            className="topButton"
+            onClick={scrollToTop}
+            aria-label="Back to top"
+          >
+            ↑
+          </button>
+        )}
+      </main>
+    );
+  }
 
   return (
     <main className="portfolio">
@@ -148,13 +330,13 @@ function App() {
             </div>
 
             <div>
-              <h3>Web</h3>
-              <p>Applications</p>
+              <h3>AI</h3>
+              <p>Focus Area</p>
             </div>
 
             <div>
-              <h3>ML</h3>
-              <p>Solutions</p>
+              <h3>React</h3>
+              <p>Frontend</p>
             </div>
           </div>
         </div>
@@ -274,9 +456,15 @@ function App() {
               </div>
 
               <div className="projectButtons">
-                <a href={project.demoLink} target="_blank" rel="noreferrer">
-                  Live Demo
-                </a>
+                {project.isDesignPage ? (
+                  <button onClick={() => setCurrentPage("designs")}>
+                    {project.buttonText}
+                  </button>
+                ) : (
+                  <a href={project.demoLink} target="_blank" rel="noreferrer">
+                    Live Demo
+                  </a>
+                )}
               </div>
             </article>
           ))}
