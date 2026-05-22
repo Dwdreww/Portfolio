@@ -39,7 +39,7 @@ const projects = [
     description:
       "A pineapple disease detection system that uses YOLOv8 and EfficientNet to identify pineapple health conditions through image-based analysis.",
     tech: ["Python", "Flask", "YOLOv8", "EfficientNet", "React"],
-    demoLink: "https://dwdreww.github.io/Agri-Vision/",
+    demoLink: "https://agri-vision-eosin.vercel.app/",
   },
   {
     title: "Chunky 3.5",
@@ -58,6 +58,15 @@ const projects = [
       "A pet matching web application designed to help users browse pet profiles and find suitable matches through a clean, simple interface.",
     tech: ["React", "JavaScript", "CSS", "GitHub Pages"],
     demoLink: "https://dwdreww.github.io/app-test/",
+  },
+  {
+    title: "Abot-Kamay",
+    category: ["Full-Stack", "UI / UX"],
+    highlight: "Barangay PWD Platform",
+    description:
+      "A barangay PWD platform for managing applications, profiles, requirements, reports, and administrative workflows.",
+    tech: ["React", "TypeScript", "Firebase", "Tailwind", "Vercel"],
+    demoLink: "https://abot-kamay.vercel.app/",
   },
   {
     title: "Figma UI/UX Designs",
@@ -325,7 +334,7 @@ function App() {
 
           <div className="heroStats">
             <div>
-              <h3>4+</h3>
+              <h3>5+</h3>
               <p>Projects</p>
             </div>
 
