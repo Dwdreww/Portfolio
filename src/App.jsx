@@ -1,530 +1,616 @@
 import { useEffect, useMemo, useState } from "react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  BookOpen,
+  Brain,
+  BriefcaseBusiness,
+  Check,
+  Code2,
+  Contact,
+  Copy,
+  ExternalLink,
+  GitBranch,
+  GraduationCap,
+  Layers3,
+  Mail,
+  Menu,
+  Palette,
+  Send,
+  Sparkles,
+  X,
+} from "lucide-react";
+import {
+  HashRouter,
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import {
+  EMAIL,
+  PROFILE_IMAGE,
+  designWorks,
+  projectCategories,
+  projects,
+  skillGroups,
+  socialLinks,
+  upcomingDesignFocus,
+} from "./portfolioData";
 
-const EMAIL = "andrewvalenzuela082@gmail.com";
-const PROFILE_IMAGE = `${import.meta.env.BASE_URL}drew.JPEG`;
-
-const figmaWorks = [
-  {
-    title: "Nike App Landing Page",
-    type: "Mobile App Prototype",
-    description:
-      "A Nike app landing page prototype created in Figma, focused on bold product presentation, clean mobile layout, and a smooth app-style user flow.",
-    tools: ["Figma", "Landing Page", "Mobile UI", "Prototype"],
-    image: `${import.meta.env.BASE_URL}Nikeapp.png`,
-    link: "https://www.figma.com/proto/QFTwsuhr07SvXdR89p4BaO/NIKE-APP-LANDING-PAGE?node-id=102-11&p=f&t=JZUe3lFT5r4nuN8d-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=102%3A11",
-  },
-  {
-    title: "Future UI/UX Work",
-    type: "Coming Soon",
-    description:
-      "A placeholder for upcoming Figma interface design projects, prototypes, and user experience studies.",
-    tools: ["Figma", "UI Design", "Prototype", "Coming Soon"],
-    link: "#",
-  },
-  {
-    title: "Future Design Case Study",
-    type: "Coming Soon",
-    description:
-      "A reserved space for a future design case study with wireframes, user flows, and polished screens.",
-    tools: ["Figma", "Wireframe", "User Flow", "Coming Soon"],
-    link: "#",
-  },
+const navItems = [
+  { label: "Home", to: "/" },
+  { label: "Projects", to: "/projects" },
+  { label: "Designs", to: "/designs" },
+  { label: "About", to: "/about" },
+  { label: "Contact", to: "/contact" },
 ];
 
-const projects = [
-  {
-    title: "AGRI-VISION | Pineapple Disease Detection System",
-    category: ["AI / ML", "Full-Stack", "Computer Vision"],
-    highlight: "Computer Vision System",
-    description:
-      "A pineapple disease detection system that uses YOLOv8 and EfficientNet to identify pineapple health conditions through image-based analysis.",
-    tech: ["Python", "Flask", "YOLOv8", "EfficientNet", "React"],
-    demoLink: "https://agri-vision-eosin.vercel.app/",
-  },
-  {
-    title: "Chunky 3.5",
-    category: ["AI / ML", "Full-Stack", "NLP / BERT"],
-    highlight: "NLP Toxicity Detection",
-    description:
-      "A toxic detection and classification framework for Instagram using a BERT-based deep learning model.",
-    tech: ["HTML", "CSS", "BERT Model", "GitHub Pages"],
-    demoLink: "https://dwdreww.github.io/Latest-Chunky-Model/",
-  },
-  {
-    title: "PawMatch",
-    category: ["Full-Stack"],
-    highlight: "Pet Matching Web App",
-    description:
-      "A pet matching web application designed to help users browse pet profiles and find suitable matches through a clean, simple interface.",
-    tech: ["React", "JavaScript", "CSS", "GitHub Pages"],
-    demoLink: "https://dwdreww.github.io/app-test/",
-  },
-  {
-    title: "Abot-Kamay",
-    category: ["Full-Stack", "UI / UX"],
-    highlight: "Barangay PWD Platform",
-    description:
-      "A barangay PWD platform for managing applications, profiles, requirements, reports, and administrative workflows.",
-    tech: ["React", "TypeScript", "Firebase", "Tailwind", "Vercel"],
-    demoLink: "https://abot-kamay.vercel.app/",
-  },
-  {
-    title: "Figma UI/UX Designs",
-    category: ["UI / UX"],
-    highlight: "Design Landing Page",
-    description:
-      "A collection of Figma-based interface designs, wireframes, and prototypes focused on clean layout and user-friendly experiences.",
-    tech: ["Figma", "Wireframe", "Prototype", "UI Design"],
-    isDesignPage: true,
-    buttonText: "View Designs",
-  },
-];
+const featuredProjects = projects.filter((project) => project.featured);
 
-const categories = [
-  "All",
-  "AI / ML",
-  "Full-Stack",
-  "Computer Vision",
-  "NLP / BERT",
-  "UI / UX",
-];
-
-function App() {
-  const [activeCategory, setActiveCategory] = useState("All");
+function useCopyEmail() {
   const [copied, setCopied] = useState(false);
-  const [showTopButton, setShowTopButton] = useState(false);
-  const [currentPage, setCurrentPage] = useState("portfolio");
 
-  const filteredProjects = useMemo(() => {
-    if (activeCategory === "All") return projects;
-
-    return projects.filter((project) =>
-      project.category.includes(activeCategory)
-    );
-  }, [activeCategory]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowTopButton(window.scrollY > 450);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
-
-  const handleCopyEmail = async () => {
+  const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
       setCopied(true);
-
-      setTimeout(() => {
-        setCopied(false);
-      }, 1800);
+      window.setTimeout(() => setCopied(false), 1800);
     } catch {
-      alert("Email copied manually: " + EMAIL);
+      window.location.href = `mailto:${EMAIL}`;
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  return { copied, copyEmail };
+}
 
-  if (currentPage === "designs") {
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [pathname]);
+
+  return null;
+}
+
+function SiteNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  return (
+    <header className="site-header">
+      <nav className="site-nav" aria-label="Primary navigation">
+        <Link className="brand" to="/" aria-label="Andrew Valenzuela home">
+          <span className="brand-mark">AV</span>
+          <span>
+            <strong>Andrew Valenzuela</strong>
+            <small>Full-Stack Web Developer</small>
+          </span>
+        </Link>
+
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((current) => !current)}
+        >
+          {isOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+        </button>
+
+        <div className={`nav-links ${isOpen ? "is-open" : ""}`}>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+function ButtonLink({ children, className = "", icon: Icon, to, href, ...props }) {
+  const content = (
+    <>
+      <span>{children}</span>
+      {Icon ? <Icon size={18} aria-hidden="true" /> : null}
+    </>
+  );
+
+  if (to) {
     return (
-      <main className="portfolio designPage">
-        <div className="backgroundGlow glowOne"></div>
-        <div className="backgroundGlow glowTwo"></div>
-        <div className="backgroundGrid"></div>
-
-        <nav className="navbar">
-          <button
-            className="logo logoButton"
-            onClick={() => setCurrentPage("portfolio")}
-          >
-            <span className="logoMark">CS</span>
-            <span>Portfolio</span>
-          </button>
-
-          <div className="navLinks designNavLinks">
-            <button onClick={() => setCurrentPage("portfolio")}>
-              Portfolio
-            </button>
-            <a href={`mailto:${EMAIL}`}>Contact</a>
-          </div>
-        </nav>
-
-        <section className="designHero">
-          <div className="designHeroText">
-            <p className="sectionTag">UI / UX Design Works</p>
-
-            <h1>
-              Figma Designs & <span>Prototypes</span>
-            </h1>
-
-            <p>
-              This page showcases my interface design works, wireframes, and
-              prototypes created using Figma. These designs focus on clean
-              layouts, smooth user flow, and practical user experience.
-            </p>
-
-            <div className="designHeroButtons">
-              <button
-                className="primaryButton"
-                onClick={() => setCurrentPage("portfolio")}
-              >
-                Back to Portfolio
-              </button>
-
-              <a className="secondaryButton" href="#designWorks">
-                View Design Works
-              </a>
-            </div>
-          </div>
-
-          <div className="designHeroCard">
-            <div className="designMockup">
-              <div className="mockupTop"></div>
-              <div className="mockupLine long"></div>
-              <div className="mockupLine"></div>
-
-              <div className="mockupGrid">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-
-            <div className="designFloatingTag tagOne">Wireframe</div>
-            <div className="designFloatingTag tagTwo">Prototype</div>
-            <div className="designFloatingTag tagThree">UI Design</div>
-          </div>
-        </section>
-
-        <section id="designWorks" className="section designWorksSection">
-          <div className="projectHeader">
-            <div>
-              <p className="sectionTag">Design Gallery</p>
-              <h2 className="sectionTitle">Selected Figma Works</h2>
-            </div>
-          </div>
-
-          <div className="designGrid">
-            {figmaWorks.map((work, index) => (
-              <article className="designCard" key={work.title}>
-                <div
-                  className={`designPreview ${
-                    work.image ? "designPreviewImage" : ""
-                  }`}
-                >
-                  {work.image ? (
-                    <img src={work.image} alt={`${work.title} preview`} />
-                  ) : (
-                    <>
-                      <div className="previewCircle"></div>
-
-                      <div className="previewPanel">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                <div className="projectTop">
-                  <span>0{index + 1}</span>
-                  <p>{work.type}</p>
-                </div>
-
-                <h3>{work.title}</h3>
-
-                <p>{work.description}</p>
-
-                <div className="techList">
-                  {work.tools.map((tool) => (
-                    <span key={tool}>{tool}</span>
-                  ))}
-                </div>
-
-                <div className="projectButtons">
-                  <a href={work.link} target="_blank" rel="noreferrer">
-                    {work.link === "#" ? "Coming Soon" : "Open Figma"}
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <footer className="footer">
-          <p>© 2026 Andrew Valenzuela. UI/UX Design Works.</p>
-        </footer>
-
-        {showTopButton && (
-          <button
-            className="topButton"
-            onClick={scrollToTop}
-            aria-label="Back to top"
-          >
-            ↑
-          </button>
-        )}
-      </main>
+      <Link className={`button ${className}`} to={to} {...props}>
+        {content}
+      </Link>
     );
   }
 
   return (
-    <main className="portfolio">
-      <div className="backgroundGlow glowOne"></div>
-      <div className="backgroundGlow glowTwo"></div>
-      <div className="backgroundGrid"></div>
+    <a className={`button ${className}`} href={href} {...props}>
+      {content}
+    </a>
+  );
+}
 
-      <nav className="navbar">
-        <a href="#home" className="logo">
-          <span className="logoMark">CS</span>
-          <span>Portfolio</span>
-        </a>
+function SectionHeader({ eyebrow, title, text, align = "start" }) {
+  return (
+    <div className={`section-header align-${align}`}>
+      <p className="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+      {text ? <p>{text}</p> : null}
+    </div>
+  );
+}
 
-        <div className="navLinks">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+function PageHero({ eyebrow, title, text, action }) {
+  return (
+    <section className="page-hero">
+      <div className="container">
+        <div className="page-hero-copy">
+          <p className="eyebrow">{eyebrow}</p>
+          <h1>{title}</h1>
+          <p>{text}</p>
+          {action ? <div className="page-hero-action">{action}</div> : null}
         </div>
-      </nav>
+      </div>
+    </section>
+  );
+}
 
-      <section id="home" className="hero">
-        <div className="heroTextBox">
-          <div className="statusPill">
-            <span></span>
-            Available for projects
-          </div>
+function ProjectCard({ project, compact = false }) {
+  return (
+    <article className={`project-card ${compact ? "compact" : ""}`}>
+      <a
+        className="project-media"
+        href={project.demoUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Open ${project.title} live demo`}
+      >
+        <img src={project.screenshot} alt={`${project.title} interface screenshot`} />
+      </a>
 
-          <p className="smallTitle">Full Stack Developer</p>
-
-          <h1>
-            Hi, I’m <span>Andrew Valenzuela</span>
-          </h1>
-
-          <p className="heroDescription">
-            I build clean web applications, machine learning projects, and
-            practical software systems that solve real-world problems.
-          </p>
-
-          <div className="heroButtons">
-            <a href="#projects" className="primaryButton">
-              View Projects
-            </a>
-
-            <button className="secondaryButton" onClick={handleCopyEmail}>
-              {copied ? "Email Copied!" : "Copy Email"}
-            </button>
-          </div>
-
-          <div className="heroStats">
-            <div>
-              <h3>5+</h3>
-              <p>Projects</p>
-            </div>
-
-            <div>
-              <h3>AI</h3>
-              <p>Focus Area</p>
-            </div>
-
-            <div>
-              <h3>React</h3>
-              <p>Frontend</p>
-            </div>
-          </div>
+      <div className="project-body">
+        <div className="project-meta">
+          <span>{project.role}</span>
+          <span>{project.categories[0]}</span>
         </div>
 
-        <div className="heroVisual">
-          <div className="orbit orbitOne"></div>
-          <div className="orbit orbitTwo"></div>
+        <div>
+          <h3>{project.title}</h3>
+          <p className="project-subtitle">{project.subtitle}</p>
+        </div>
 
-          <div className="techBubble bubbleOne">React</div>
-          <div className="techBubble bubbleTwo">Python</div>
-          <div className="techBubble bubbleThree">JavaScript</div>
-          
+        <p>{project.summary}</p>
+        <p className="project-impact">{project.impact}</p>
 
-          <div className="mainCircle">
-            <div className="circleShine"></div>
+        <div className="tag-list" aria-label={`${project.title} technology stack`}>
+          {project.stack.map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
 
-            <div className="innerCircle imageCircle">
-              <img src={PROFILE_IMAGE} alt="Andrew Valenzuela" />
+        <div className="card-actions">
+          <ButtonLink
+            className="button-primary"
+            href={project.demoUrl}
+            target="_blank"
+            rel="noreferrer"
+            icon={ExternalLink}
+          >
+            Live Demo
+          </ButtonLink>
+          <ButtonLink
+            className="button-secondary"
+            href={project.repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            icon={GitBranch}
+          >
+            GitHub
+          </ButtonLink>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function SkillCard({ skill, icon: Icon }) {
+  return (
+    <article className="skill-card">
+      <div className="skill-icon">
+        <Icon size={22} aria-hidden="true" />
+      </div>
+      <h3>{skill.title}</h3>
+      <p>{skill.summary}</p>
+      <div className="tag-list">
+        {skill.tools.map((tool) => (
+          <span key={tool}>{tool}</span>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function HomePage({ copied, copyEmail }) {
+  return (
+    <>
+      <section
+        className="hero"
+        style={{
+          "--hero-image": `url(${PROFILE_IMAGE})`,
+        }}
+      >
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <p className="status-line">
+              <BadgeCheck size={18} aria-hidden="true" />
+              Open to Opportunities
+            </p>
+            <p className="eyebrow">Computer Science Student</p>
+            <h1>Full-Stack Web Developer building practical web systems.</h1>
+            <p className="hero-text">
+              I create responsive web applications, AI-enabled tools, and
+              user-friendly interfaces that turn technical ideas into working
+              products.
+            </p>
+            <div className="hero-actions">
+              <ButtonLink className="button-primary" to="/projects" icon={ArrowRight}>
+                View Projects
+              </ButtonLink>
+              <button className="button button-secondary" type="button" onClick={copyEmail}>
+                <span>{copied ? "Email Copied" : "Copy Email"}</span>
+                {copied ? <Check size={18} aria-hidden="true" /> : <Copy size={18} aria-hidden="true" />}
+              </button>
             </div>
           </div>
 
-          <div className="floatingCard topCard">
-            <span>01</span>
-            <p>Web Development</p>
-          </div>
-
-          <div className="floatingCard bottomCard">
-            <span>02</span>
-            <p>Machine Learning</p>
+          <div className="hero-proof" aria-label="Portfolio highlights">
+            <div>
+              <strong>4+</strong>
+              <span>Deployed projects</span>
+            </div>
+            <div>
+              <strong>AI/ML</strong>
+              <span>Applied systems</span>
+            </div>
+            <div>
+              <strong>React</strong>
+              <span>Primary frontend</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="about" className="section aboutSection">
-        <p className="sectionTag">About Me</p>
-
-        <div className="aboutGrid">
-          <h2>Building simple, useful, and creative digital solutions.</h2>
-
-          <p>
-            I am a Computer Science student interested in software development,
-            artificial intelligence, and user-friendly systems. I have
-            experience in translating complex technical concepts into clear,
-            practical solutions and quickly adapt to new environments. I am
-            eager to contribute my knowledge and passion for continuous learning
-            in a dynamic professional setting.
-          </p>
-        </div>
-      </section>
-
-      <section id="skills" className="section">
-        <p className="sectionTag">Skills</p>
-        <h2 className="sectionTitle">Technologies I Use</h2>
-
-        <div className="skillsGrid">
-          <div className="skillCard">
-            <div className="skillIcon">01</div>
-            <h3>Frontend</h3>
-            <p>HTML, CSS, JavaScript, React</p>
-          </div>
-
-          <div className="skillCard">
-            <div className="skillIcon">02</div>
-            <h3>Backend</h3>
-            <p>Python, Flask, API Integration</p>
-          </div>
-
-          <div className="skillCard">
-            <div className="skillIcon">03</div>
-            <h3>AI / Machine Learning</h3>
-            <p>TensorFlow, PyTorch, OpenCV, YOLO, BERT</p>
-          </div>
-
-          <div className="skillCard">
-            <div className="skillIcon">04</div>
-            <h3>Tools</h3>
-            <p>GitHub, VS Code, Figma, MySQL</p>
+      <section className="site-section">
+        <div className="container">
+          <SectionHeader
+            eyebrow="Featured work"
+            title="Projects that show the range."
+            text="The homepage leads with deployed work that proves full-stack delivery, applied AI, and practical interface design."
+          />
+          <div className="featured-grid">
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} compact />
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="projects" className="section">
-        <div className="projectHeader">
+      <section className="dark-band">
+        <div className="container two-column">
           <div>
-            <p className="sectionTag">Projects</p>
-            <h2 className="sectionTitle">Featured Works</h2>
+            <p className="eyebrow">How I work</p>
+            <h2>Clear interfaces, useful systems, and enough design sense to make them usable.</h2>
           </div>
+          <div className="work-principles">
+            <p>
+              I focus on turning requirements into working screens, connecting
+              frontend flows to backend logic, and presenting technical features
+              in a way people can understand quickly.
+            </p>
+            <ButtonLink className="button-light" to="/about" icon={ArrowRight}>
+              More About Me
+            </ButtonLink>
+          </div>
+        </div>
+      </section>
 
-          <div className="filterButtons">
-            {categories.map((category) => (
+      <section className="site-section">
+        <div className="container">
+          <SectionHeader
+            eyebrow="Capabilities"
+            title="A full-stack foundation with AI and product design support."
+            text="These are the tools and practices I use most often across the projects in this portfolio."
+          />
+          <div className="skill-grid">
+            {skillGroups.map((skill, index) => {
+              const icons = [Code2, BriefcaseBusiness, Brain, Palette];
+              const Icon = icons[index] || Code2;
+              return <SkillCard key={skill.title} skill={skill} icon={Icon} />;
+            })}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ProjectsPage() {
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const visibleProjects = useMemo(() => {
+    if (activeCategory === "All") return projects;
+    return projects.filter((project) => project.categories.includes(activeCategory));
+  }, [activeCategory]);
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Projects"
+        title="Deployed work across full-stack, AI, and interface design."
+        text="Each project includes the working demo and source repository so the experience and implementation can be reviewed together."
+      />
+
+      <section className="site-section">
+        <div className="container">
+          <div className="filter-bar" aria-label="Project filters">
+            {projectCategories.map((category) => (
               <button
                 key={category}
-                className={activeCategory === category ? "activeFilter" : ""}
+                className={activeCategory === category ? "active" : undefined}
+                type="button"
+                aria-pressed={activeCategory === category}
                 onClick={() => setActiveCategory(category)}
               >
                 {category}
               </button>
             ))}
           </div>
-        </div>
 
-        <div className="projectGrid">
-          {filteredProjects.map((project, index) => (
-            <article className="projectCard" key={project.title}>
-              <div className="projectTop">
-                <span>0{index + 1}</span>
-                <p>{project.highlight}</p>
-              </div>
-
-              <h3>{project.title}</h3>
-
-              <p>{project.description}</p>
-
-              <div className="techList">
-                {project.tech.map((tech) => (
-                  <span key={tech}>{tech}</span>
-                ))}
-              </div>
-
-              <div className="projectButtons">
-                {project.isDesignPage ? (
-                  <button onClick={() => setCurrentPage("designs")}>
-                    {project.buttonText}
-                  </button>
-                ) : (
-                  <a href={project.demoLink} target="_blank" rel="noreferrer">
-                    Live Demo
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
+          <div className="project-grid">
+            {visibleProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
         </div>
       </section>
+    </>
+  );
+}
 
-      <section id="contact" className="section contactSection">
-        <p className="sectionTag">Contact</p>
+function DesignsPage() {
+  const design = designWorks[0];
 
-        <h2>Let’s connect and build something useful.</h2>
-
-        <p>
-          You can contact me through email or check more of my work on GitHub.
-        </p>
-
-        <div className="contactButtons">
-          <button onClick={handleCopyEmail}>
-            {copied ? "Email Copied!" : "Copy Email"}
-          </button>
-
-          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-
-          <a href="https://github.com/Dwdreww" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-
-          <a
-            href="https://www.linkedin.com/in/andrew-valenzuela-73578a3b3/"
+  return (
+    <>
+      <PageHero
+        eyebrow="Design work"
+        title="Figma prototypes and interface studies."
+        text="This page keeps the current design work curated and honest: one finished prototype now, with a clear direction for future case studies."
+        action={
+          <ButtonLink
+            className="button-primary"
+            href={design.link}
             target="_blank"
             rel="noreferrer"
+            icon={ExternalLink}
           >
-            LinkedIn
-          </a>
+            Open Figma Prototype
+          </ButtonLink>
+        }
+      />
+
+      <section className="site-section">
+        <div className="container design-layout">
+          <article className="design-feature">
+            <div className="design-image">
+              <img src={design.image} alt={`${design.title} preview`} />
+            </div>
+            <div className="design-copy">
+              <p className="eyebrow">{design.type}</p>
+              <h2>{design.title}</h2>
+              <p>{design.summary}</p>
+              <div className="tag-list">
+                {design.tools.map((tool) => (
+                  <span key={tool}>{tool}</span>
+                ))}
+              </div>
+              <ButtonLink
+                className="button-secondary"
+                href={design.link}
+                target="_blank"
+                rel="noreferrer"
+                icon={ExternalLink}
+              >
+                View Prototype
+              </ButtonLink>
+            </div>
+          </article>
+
+          <aside className="upcoming-panel" aria-label="Upcoming design work">
+            <p className="eyebrow">Upcoming</p>
+            <h2>Next design case studies</h2>
+            <ul>
+              {upcomingDesignFocus.map((item) => (
+                <li key={item}>
+                  <Sparkles size={18} aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </section>
+    </>
+  );
+}
 
-      <footer className="footer">
-        <p>© 2026 Andrew Valenzuela. Built with React.</p>
-      </footer>
+function AboutPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="About"
+        title="A Computer Science student building practical full-stack products."
+        text="My work sits at the intersection of frontend development, backend integration, applied AI, and interface design."
+      />
 
-      {showTopButton && (
-        <button
-          className="topButton"
-          onClick={scrollToTop}
-          aria-label="Back to top"
-        >
-          ↑
-        </button>
-      )}
-    </main>
+      <section className="site-section">
+        <div className="container about-layout">
+          <div className="about-photo">
+            <img src={PROFILE_IMAGE} alt="Andrew Valenzuela" />
+          </div>
+
+          <div className="about-copy">
+            <p>
+              I am a Computer Science student focused on building clean web
+              applications and useful software systems. My projects include
+              full-stack service platforms, machine learning interfaces, and
+              practical tools that make technical workflows easier to use.
+            </p>
+            <p>
+              I care about clear structure, readable interfaces, and shipping
+              work that can be opened, tested, and improved. I am especially
+              interested in roles where I can keep growing as a developer while
+              contributing to real product work.
+            </p>
+
+            <div className="about-points">
+              <div>
+                <GraduationCap size={22} aria-hidden="true" />
+                <h3>CS foundation</h3>
+                <p>Academic grounding in software development, systems thinking, and problem solving.</p>
+              </div>
+              <div>
+                <Layers3 size={22} aria-hidden="true" />
+                <h3>Product mindset</h3>
+                <p>Interfaces are planned around clarity, user flow, and the work people need to complete.</p>
+              </div>
+              <div>
+                <BookOpen size={22} aria-hidden="true" />
+                <h3>Continuous learning</h3>
+                <p>Comfortable learning new tools and improving projects through feedback and iteration.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ContactPage({ copied, copyEmail }) {
+  return (
+    <>
+      <PageHero
+        eyebrow="Contact"
+        title="Let us connect and build something useful."
+        text="The best way to reach me is by email. You can also review my work on GitHub or connect with me on LinkedIn."
+      />
+
+      <section className="site-section">
+        <div className="container contact-grid">
+          <div className="contact-panel">
+            <Mail size={28} aria-hidden="true" />
+            <h2>Email</h2>
+            <p>{EMAIL}</p>
+            <div className="card-actions">
+              <button className="button button-primary" type="button" onClick={copyEmail}>
+                <span>{copied ? "Email Copied" : "Copy Email"}</span>
+                {copied ? <Check size={18} aria-hidden="true" /> : <Copy size={18} aria-hidden="true" />}
+              </button>
+              <ButtonLink className="button-secondary" href={`mailto:${EMAIL}`} icon={Send}>
+                Send Email
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="contact-links">
+            <a href={socialLinks.github} target="_blank" rel="noreferrer">
+              <GitBranch size={22} aria-hidden="true" />
+              <span>
+                <strong>GitHub</strong>
+                <small>Source code and project repositories</small>
+              </span>
+              <ExternalLink size={18} aria-hidden="true" />
+            </a>
+            <a href={socialLinks.linkedin} target="_blank" rel="noreferrer">
+              <Contact size={22} aria-hidden="true" />
+              <span>
+                <strong>LinkedIn</strong>
+                <small>Professional profile and updates</small>
+              </span>
+              <ExternalLink size={18} aria-hidden="true" />
+            </a>
+            <div className="resume-placeholder">
+              <BriefcaseBusiness size={22} aria-hidden="true" />
+              <span>
+                <strong>Resume PDF</strong>
+                <small>Reserved for a downloadable resume when the file is added.</small>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="site-footer">
+      <div className="container footer-inner">
+        <p>Andrew Valenzuela - Full-Stack Web Developer</p>
+        <div>
+          <Link to="/projects">Projects</Link>
+          <Link to="/contact">Contact</Link>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function PortfolioExperience() {
+  const { copied, copyEmail } = useCopyEmail();
+
+  return (
+    <div className="site-shell">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <ScrollToTop />
+      <SiteNav />
+      <main id="main">
+        <Routes>
+          <Route path="/" element={<HomePage copied={copied} copyEmail={copyEmail} />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/designs" element={<DesignsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage copied={copied} copyEmail={copyEmail} />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <HashRouter>
+      <PortfolioExperience />
+    </HashRouter>
   );
 }
 
