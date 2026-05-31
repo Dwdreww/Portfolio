@@ -2,6 +2,7 @@ const asset = (fileName) => `${import.meta.env.BASE_URL}${fileName}`;
 
 export const EMAIL = "andrewvalenzuela082@gmail.com";
 export const PROFILE_IMAGE = asset("drew.JPEG");
+export const FORMAL_PROFILE_IMAGE = asset("profile-headshot.png");
 
 export const socialLinks = {
   github: "https://github.com/Dwdreww",
@@ -24,12 +25,12 @@ export const projects = [
     title: "AGRI-VISION",
     subtitle: "Pineapple Disease Detection System",
     summary:
-      "A crop health scanner that connects a React interface with a Flask backend for image-based pineapple disease analysis.",
+      "A crop health scanner that connects a browser interface with a Flask backend for image-based pineapple disease analysis.",
     impact:
       "Built around YOLOv8 detection and EfficientNet classification so users can upload samples and receive practical visual output.",
     categories: ["Full-Stack", "AI / ML", "Computer Vision"],
     role: "Full-stack developer",
-    stack: ["React", "Python", "Flask", "YOLOv8", "EfficientNet"],
+    stack: ["HTML", "CSS", "JavaScript", "Python", "Flask", "PyTorch", "OpenCV", "YOLOv8", "EfficientNet"],
     screenshot: asset("project-agri-vision.png"),
     demoUrl: "https://agri-vision-eosin.vercel.app/",
     repoUrl: "https://github.com/Dwdreww/Agri-Vision",
@@ -45,7 +46,7 @@ export const projects = [
       "Designed the interface and workflows to make local government services easier to access and manage.",
     categories: ["Full-Stack", "UI / UX"],
     role: "Frontend and workflow builder",
-    stack: ["React", "TypeScript", "Firebase", "Tailwind", "Vercel"],
+    stack: ["React", "TypeScript", "Firebase", "Firestore", "Tailwind CSS", "Vite", "Vercel"],
     screenshot: asset("project-abot-kamay.png"),
     demoUrl: "https://abot-kamay.vercel.app/",
     repoUrl: "https://github.com/Dwdreww/Abot-Kamay",
@@ -61,7 +62,7 @@ export const projects = [
       "Presents a BERT-based classification workflow in a direct interface for testing and reviewing model output.",
     categories: ["Full-Stack", "AI / ML", "NLP / BERT"],
     role: "ML interface developer",
-    stack: ["HTML", "CSS", "JavaScript", "BERT Model", "GitHub Pages"],
+    stack: ["HTML", "CSS", "JavaScript", "Python", "Flask", "BERT", "EasyOCR", "Transformers"],
     screenshot: asset("project-chunky.png"),
     demoUrl: "https://dwdreww.github.io/Latest-Chunky-Model/",
     repoUrl: "https://github.com/Dwdreww/Latest-Chunky-Model",
@@ -75,9 +76,9 @@ export const projects = [
       "A pet matching web application that helps users browse pet profiles and move through a simple adoption-style flow.",
     impact:
       "Focuses on approachable visual design, clear navigation, and a direct frontend experience for pet discovery.",
-    categories: ["Full-Stack", "Frontend", "UI / UX"],
+    categories: ["Frontend", "UI / UX"],
     role: "Frontend developer",
-    stack: ["React", "JavaScript", "CSS", "GitHub Pages"],
+    stack: ["HTML", "CSS", "JavaScript", "LocalStorage", "Font Awesome", "GitHub Pages"],
     screenshot: asset("project-pawmatch.png"),
     demoUrl: "https://dwdreww.github.io/app-test/",
     repoUrl: "https://github.com/Dwdreww/app-test",

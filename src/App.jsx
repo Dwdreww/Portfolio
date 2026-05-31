@@ -30,6 +30,7 @@ import {
 } from "react-router-dom";
 import {
   EMAIL,
+  FORMAL_PROFILE_IMAGE,
   PROFILE_IMAGE,
   designWorks,
   projectCategories,
@@ -169,9 +170,19 @@ function PageHero({ eyebrow, title, text, action }) {
   );
 }
 
-function ProjectCard({ project, compact = false }) {
+function ProjectCard({
+  project,
+  compact = false,
+  selectable = false,
+  selected = false,
+  onSelect,
+}) {
   return (
-    <article className={`project-card ${compact ? "compact" : ""}`}>
+    <article
+      className={`project-card ${compact ? "compact" : ""} ${
+        selected ? "is-selected" : ""
+      }`}
+    >
       <a
         className="project-media"
         href={project.demoUrl}
@@ -203,6 +214,17 @@ function ProjectCard({ project, compact = false }) {
         </div>
 
         <div className="card-actions">
+          {selectable ? (
+            <button
+              className="button button-secondary project-preview-button"
+              type="button"
+              aria-pressed={selected}
+              onClick={onSelect}
+            >
+              <span>{selected ? "Selected" : "Preview"}</span>
+              <ArrowRight size={18} aria-hidden="true" />
+            </button>
+          ) : null}
           <ButtonLink
             className="button-primary"
             href={project.demoUrl}
@@ -224,6 +246,59 @@ function ProjectCard({ project, compact = false }) {
         </div>
       </div>
     </article>
+  );
+}
+
+function ProjectSpotlight({ project }) {
+  return (
+    <section className="project-spotlight" aria-live="polite">
+      <div className="project-spotlight-media">
+        <img src={project.screenshot} alt={`${project.title} selected project screenshot`} />
+      </div>
+
+      <div className="project-spotlight-copy" key={project.id}>
+        <div className="project-meta">
+          <span>{project.role}</span>
+          <span>{project.categories.join(" / ")}</span>
+        </div>
+
+        <div>
+          <p className="eyebrow">Selected Project</p>
+          <h2>{project.title}</h2>
+          <p className="project-subtitle">{project.subtitle}</p>
+        </div>
+
+        <p>{project.summary}</p>
+        <p className="project-impact">{project.impact}</p>
+
+        <div className="tag-list" aria-label={`${project.title} stack and categories`}>
+          {[...project.stack, ...project.categories].map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+
+        <div className="card-actions">
+          <ButtonLink
+            className="button-primary"
+            href={project.demoUrl}
+            target="_blank"
+            rel="noreferrer"
+            icon={ExternalLink}
+          >
+            Live Demo
+          </ButtonLink>
+          <ButtonLink
+            className="button-secondary"
+            href={project.repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            icon={GitBranch}
+          >
+            GitHub
+          </ButtonLink>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -350,11 +425,23 @@ function HomePage({ copied, copyEmail }) {
 
 function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
 
   const visibleProjects = useMemo(() => {
     if (activeCategory === "All") return projects;
     return projects.filter((project) => project.categories.includes(activeCategory));
   }, [activeCategory]);
+
+  useEffect(() => {
+    if (!visibleProjects.some((project) => project.id === selectedProjectId)) {
+      setSelectedProjectId(visibleProjects[0]?.id ?? projects[0].id);
+    }
+  }, [selectedProjectId, visibleProjects]);
+
+  const selectedProject =
+    visibleProjects.find((project) => project.id === selectedProjectId) ??
+    visibleProjects[0] ??
+    projects[0];
 
   return (
     <>
@@ -380,9 +467,17 @@ function ProjectsPage() {
             ))}
           </div>
 
+          <ProjectSpotlight project={selectedProject} />
+
           <div className="project-grid">
             {visibleProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard
+                key={project.id}
+                project={project}
+                selectable
+                selected={project.id === selectedProject.id}
+                onSelect={() => setSelectedProjectId(project.id)}
+              />
             ))}
           </div>
         </div>
@@ -470,7 +565,7 @@ function AboutPage() {
       <section className="site-section">
         <div className="container about-layout">
           <div className="about-photo">
-            <img src={PROFILE_IMAGE} alt="Andrew Valenzuela" />
+            <img src={FORMAL_PROFILE_IMAGE} alt="Andrew Valenzuela" />
           </div>
 
           <div className="about-copy">
@@ -522,6 +617,16 @@ function ContactPage({ copied, copyEmail }) {
 
       <section className="site-section">
         <div className="container contact-grid">
+          <div className="profile-contact-card">
+            <img src={FORMAL_PROFILE_IMAGE} alt="Andrew Valenzuela" />
+            <div>
+              <p className="eyebrow">Profile</p>
+              <h2>Andrew Valenzuela</h2>
+              <p>Computer Science Student and Full-Stack Web Developer</p>
+              <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            </div>
+          </div>
+
           <div className="contact-panel">
             <Mail size={28} aria-hidden="true" />
             <h2>Email</h2>
